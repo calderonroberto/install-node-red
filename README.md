@@ -5,6 +5,17 @@ This script provides routine commands to install and configure a default install
 ## CHANGELOG
 + 2015-02-18- First Version.
  
+## STEP-BY-STEP-INSTRUCTIONS
+
+In a console in your Raspberry Pi issue: 
+
+```
+cd ~
+wget https://raw.githubusercontent.com/calderonroberto/node-red-raspberrypi-installation/master/install-node-red.sh
+bash install-node-red.sh
+```
+A bit of patience while it compiles and installs node-red and you're done.
+
 ## ASSUMPTIONS
 
 I am assuming you have raspbian >3.18.5, that is when you issue the command "uname -r" you get 
