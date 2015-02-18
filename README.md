@@ -14,6 +14,15 @@ cd ~
 wget https://raw.githubusercontent.com/calderonroberto/node-red-raspberrypi-installation/master/install-node-red.sh
 bash install-node-red.sh
 ```
+
+you can also use a shortened version if you're SSHing into your pi:
+
+```
+cd ~
+wget http://bit.do/installnodered
+bash installnodered
+```
+
 A bit of patience while it compiles and installs node-red and you're done.
 
 ## ASSUMPTIONS
