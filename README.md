@@ -11,7 +11,7 @@ In a console in your Raspberry Pi issue:
 
 ```
 cd ~
-wget https://raw.githubusercontent.com/calderonroberto/node-red-raspberrypi-installation/master/install-node-red.sh
+wget https://raw.githubusercontent.com/calderonroberto/install-node-red/master/install-node-red.sh
 bash install-node-red.sh
 ```
 
