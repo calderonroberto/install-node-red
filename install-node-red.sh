@@ -85,7 +85,7 @@ fi
 ## Finally, set up an init.d script to configure nodeRED to start at boot
 ##
 if [ -a /etc/init.d/node-red ]; then
-  echo -e "${GREEN}Downloading init.d script already configured${NC}"
+  echo -e "${GREEN}init.d script already configured${NC}"
 else 
   echo -e "${GREEN}Downloading init.d script. Configuring to start at boot${NC}"
   {
