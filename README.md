@@ -19,8 +19,8 @@ you can also use a shortened version if you're SSHing into your pi:
 
 ```
 cd ~
-wget http://bit.do/installnodered
-bash installnodered
+wget http://bit.do/install-node-red
+bash install-node-red
 ```
 
 A bit of patience while it compiles and installs node-red and you're done.
