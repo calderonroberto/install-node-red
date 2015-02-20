@@ -9,7 +9,9 @@
 ### END INIT INFO
 
 
-# NOTE: This is work by @Belphemur, and I don't claim any responsibility for it.
+# NOTE: This is work by entirely done by @Belphemur, and I don't claim any responsibility for it.
+#
+#
 # Can be downloaded and installed in one go by using this command
 # sudo wget -O /tmp/download https://gist.github.com/Belphemur/cf91100f81f2b37b3e94/download && sudo tar -zxf /tmp/download --strip-components 1 -C /etc/init.d && sudo chmod +x /etc/init.d/node-red && sudo update-rc.d node-red defaults
 # User that launches node-RED (it's advised to create a new user for Node-RED)

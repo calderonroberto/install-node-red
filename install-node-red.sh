@@ -1,8 +1,8 @@
 #!/bin/bash
-
+#
 # This script is based on instructions posted here:
 # http://nodered.org/docs/hardware/raspberrypi.html
-
+#
 ## INFO:
 # This script provides routine commands to install and configure 
 # a default installation of node red in your Raspberry Pi.
@@ -32,6 +32,8 @@ if (( $EUID != 0 )); then
     SUDO='sudo'
 fi
 
+cd ~
+
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ## 
 if [ ! dpkg-query -l python-rpi.gpio < /dev/null]; then
@@ -50,6 +52,8 @@ fi
 ## Install nodejs optimized for the raspberry pi architecture.
 ##
 if [ -a node_0.10.36_armhf.deb ]; then
+  echo -e "${GREEN}NodeJS is already installed${NC}"
+else 
   echo -e "${GREEN}Downloading and installing nodejs for raspberry pi${NC}"
   {
     #Install node
@@ -59,15 +63,13 @@ if [ -a node_0.10.36_armhf.deb ]; then
     echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
     exit
   }
-else 
-  echo -e "${GREEN}NodeJS is already installed${NC}"
 fi 
 
 ## Download and install NodeRED via github, this will compile and install nodered
 ##
 DIR='node-red'
 if [ -d "$DIR" ]; then
-  echo -e "${GREEN}It seems like node-red is already installed. If you want a new installation delete ${NC}" + $DIR
+  echo -e "${GREEN}It seems like node-red is already installed. If you want a new installation delete the directory '$DIR'${NC}" 
 else
   echo -e "${GREEN}Downloading, compiling and installing node-red${NC}"
   {
@@ -82,8 +84,9 @@ fi
 
 ## Finally, set up an init.d script to configure nodeRED to start at boot
 ##
-if [ ! -a /etc/init.d/node-red ]; then
-
+if [ -a /etc/init.d/node-red ]; then
+  echo -e "${GREEN}Downloading init.d script already configured${NC}"
+else 
   echo -e "${GREEN}Downloading init.d script. Configuring to start at boot${NC}"
   {
     $SUDO wget --output-document run-node-red $INITFILE
@@ -97,10 +100,7 @@ if [ ! -a /etc/init.d/node-red ]; then
     echo -e "${RED}ERROR: there was a problem downloading and configuring the init.d script${NC}"
     exit
   }
-else 
-  echo -e "${GREEN}Downloading init.d script already configured${NC}"
 fi
-
 
 echo -e "${GREEN}Yay! You have node running.${NC}"
 echo -e "${GREEN}Visit http://<your PI address>:1880/ to begin noding in awe.${NC}"
