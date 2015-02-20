@@ -21,7 +21,7 @@
 # + Node-RED runs with a garbage collection size of 128, can be optimized as 64
 # + This script was tested with a clean install of raspbian NOOBS 
 
-INITFILE=https://gist.githubusercontent.com/calderonroberto/251d71ffd7f07d8dadee/raw/9a0f81fdfa1afdf4b22e46f2fe5532e5d10c0f1d/node-red
+INITFILE=https://raw.githubusercontent.com/calderonroberto/install-node-red/master/node-red
 SUDO=''
 
 NC='\033[0m' # No Color
@@ -32,6 +32,8 @@ if (( $EUID != 0 )); then
     SUDO='sudo'
 fi
 
+## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
+## 
 if [ ! dpkg-query -l python-rpi.gpio < /dev/null]; then
   { 
     echo -e "${GREEN}Installing GPIO Dependencies.${NC}"
@@ -45,6 +47,8 @@ else
   echo -e "${GREEN}GPIO dependencies already installed${NC}"
 fi
 
+## Install nodejs optimized for the raspberry pi architecture.
+##
 if [ -a node_0.10.36_armhf.deb ]; then
   echo -e "${GREEN}Downloading and installing nodejs for raspberry pi${NC}"
   {
@@ -59,7 +63,8 @@ else
   echo -e "${GREEN}NodeJS is already installed${NC}"
 fi 
 
-
+## Download and install NodeRED via github, this will compile and install nodered
+##
 DIR='node-red'
 if [ -d "$DIR" ]; then
   echo -e "${GREEN}It seems like node-red is already installed. If you want a new installation delete ${NC}" + $DIR
@@ -75,6 +80,8 @@ else
   }
 fi
 
+## Finally, set up an init.d script to configure nodeRED to start at boot
+##
 if [ ! -a /etc/init.d/node-red ]; then
 
   echo -e "${GREEN}Downloading init.d script. Configuring to start at boot${NC}"
