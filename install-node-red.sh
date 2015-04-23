@@ -75,7 +75,7 @@ else
   {
     $SUDO git clone https://github.com/node-red/node-red.git
     cd node-red
-    $SUDO npm install --production
+    $SUDO npm install -g --unsafe-perm  node-red
   } || {
     echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
     exit
