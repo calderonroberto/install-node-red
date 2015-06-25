@@ -17,13 +17,8 @@ In a console in your Raspberry Pi issue:
 
 ```
 cd ~
-wget https://raw.githubusercontent.com/SenseTecnic/install-node-red-pi2/master/install-node-red.sh
-bash install-node-red.sh
-```
-
-
 curl -sL https://raw.githubusercontent.com/SenseTecnic/install-node-red-pi2/master/install-node-red.sh | sudo bash
-
+```
 
 After you're finished you can find your ip address with:
 
