@@ -5,7 +5,11 @@ This script provides routine commands to install and configure a default install
 ## CHANGELOG
 + 2015-02-18 First Version.
 + 2015-02-19 Improved instructions and checked for previous installations.
-+ 2015-06-25 Update for Raspbery Pi 2
++ 2015-06-25 Update for Raspbery Pi 2 (Raspbian 3.18.11-v7+)
+
+
+##
+
 
 ## STEP-BY-STEP-INSTRUCTIONS
 
@@ -35,20 +39,22 @@ For demo purposes we wire a resistor (330 ohms) to pin pin 12, wire pin 12 to pi
 
 ![alt tag](https://raw.github.com/calderonroberto/install-node-red/master/blinkwiring.jpg)
 
+You can learn more about the Raspbery Pi's GPIO pins here: [http://pi.gadgetoid.com/pinout](http://pi.gadgetoid.com/pinout)
+
 
 ## ASSUMPTIONS
 
-I am assuming you have raspbian >3.18.5, that is when you issue the command "uname -r" you get
+I am assuming you have raspbian equal or greater than 3.18.11-v7, that is when you issue the command "uname -r" you get
 
 ```
 $ uname -r
-Linux raspberrypi 3.18.5+ ...
+'3.18.11-v7'
 ```
 
-This script will work with a raspbian installation via NOOBS_v1_3_12+ (http://www.raspberrypi.org/downloads/)
+This script will work with an installation via NOOBS => 1.4.1 [http://www.raspberrypi.org/downloads/](http://www.raspberrypi.org/downloads/)
 
 ## LIMITATIONS
 
- + This script will only work for Raspberry Pi v1 (as v2 has a different CPU archicture)
+ + This script will only work for Raspberry Pi v2
  + This is intended as an initial setup. There are important security flaws, for example the /etc/init.d/node-red file is using the root user making it insecure for production.
- + This script was tested with a clean install of raspbian NOOBS
+ + This script was tested with a clean install of raspbian NOOBS 1.4.1
