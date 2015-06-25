@@ -34,14 +34,34 @@ fi
 
 cd ~
 
+
+
+## Install nodejs optimized for the raspberry pi architecture (ARM)
+##
+if [ ! dpkg-query -l nodejs < /dev/null ]; then
+  echo -e "${GREEN}NodeJS is already installed${NC}"
+else
+  echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
+  {
+    #Install node
+    $SUDO curl -sL https://deb.nodesource.com/setup_0.10 | $SUDO bash
+    $SUDO apt-get install -y nodejs
+    $SUDO npm cache clean
+  } || {
+    echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
+    exit
+  }
+fi
+
+
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ##
 if [ ! dpkg-query -l python-rpi.gpio < /dev/null]; then
   {
     echo -e "${GREEN}Installing GPIO Dependencies.${NC}"
-    $SUDO apt-get -y install python-dev
-    $SUDO apt-get -y install python-rpi.gpio
+    $SUDO apt-get install -y build-essential python-dev python-rpi.gpio
   } || { #catch block
+
     echo -e "${RED}ERROR: There was a problem installing GPIO dependencies${NC}"
     exit
   }
@@ -49,61 +69,58 @@ else
   echo -e "${GREEN}GPIO dependencies already installed${NC}"
 fi
 
-## Install nodejs optimized for the raspberry pi architecture.
+## Download and install NodeRED via NPM
 ##
-if [ -a node_0.10.36_armhf.deb ]; then
-  echo -e "${GREEN}NodeJS is already installed${NC}"
-else
-  echo -e "${GREEN}Downloading and installing nodejs for raspberry pi${NC}"
-  {
-    #Install node
-    $SUDO wget http://node-arm.herokuapp.com/node_0.10.36_armhf.deb
-    $SUDO dpkg -i node_0.10.36_armhf.deb
-  } || {
-    echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
-    exit
-  }
-fi
+#DIR='/usr/lib/node_modules/node-red'
 
-## Download and install NodeRED via github, this will compile and install nodered
-##
-DIR='node-red'
-if [ -d "$DIR" ]; then
-  echo -e "${GREEN}It seems like node-red is already installed. If you want a new installation delete the directory '$DIR'${NC}"
+NODEREDBIN="$(which node-red)"
+if [ -a "$NODEREDBIN" ]; then
+  echo -e "${GREEN}It seems like node-red is already installed. If you want a new installation remove node-red with `npm uninstall -g node-red` "
 else
   echo -e "${GREEN}Downloading, compiling and installing node-red${NC}"
   {
-    $SUDO git clone https://github.com/node-red/node-red.git
-    cd node-red
-    $SUDO npm install --unsafe-perm --production
+    $SUDO npm install -g --unsafe-perm node-red
   } || {
     echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
     exit
   }
 fi
 
-## Finally, set up an init.d script to configure nodeRED to start at boot
+## Install WoTKit nodeRED
+echo -e "${GREEN}Downloading, compiling and installing latest version of node-red-contrib-wotkit${NC}"
+{
+  $SUDO npm uninstall -g node-red-contrib-wotkit
+  $SUDO npm install -g node-red-contrib-wotkit
+} || {
+  echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
+  exit
+}
+
+
+## Finally, set up node red to run on boot
 ##
+
+NODEREDBIN="$(which node-red)"
 if [ -a /etc/init.d/node-red ]; then
   echo -e "${GREEN}init.d script already configured${NC}"
 else
-  echo -e "${GREEN}Downloading init.d script. Configuring to start at boot${NC}"
+  echo -e "${GREEN}Configuring to start nodered at boot via $NODEREDBIN ${NC}"
   {
-    $SUDO wget --output-document run-node-red $INITFILE
-    $SUDO chmod 755 run-node-red
-    $SUDO chown root:root run-node-red
-    $SUDO mv run-node-red /etc/init.d/node-red
-    $SUDO update-rc.d node-red defaults
+    echo 'Install pm2'
+    $SUDO npm install -g pm2
     echo 'Starting service'
-    $SUDO service node-red start
+    $SUDO pm2 start $NODEREDBIN --node-args="--max-old-space-size=128" -- -v
+    echo 'Configuring for startup'
+    $SUDO pm2 startup
   } || {
     echo -e "${RED}ERROR: there was a problem downloading and configuring the init.d script${NC}"
     exit
   }
 fi
 
-echo -e "${GREEN}Yay! You have node running.${NC}"
-echo -e "${GREEN}Visit http://<your PI address>:1880/ to begin noding in awe.${NC}"
+HOSTNAMEIP="$(which node-red)"
+echo -e "${GREEN}Yay! You have node-red up and running.${NC}"
+echo -e "${GREEN}Visit http://$HOSTNAMEIP:1880/ to begin noding in awe.${NC}"
 -e "${GREEN}You can use the following nodes to test your configuration.${NC}"
 echo ' '
 echo '[{"id":"2462d9f5.db9d26","type":"function","name":"Toggle 0/1 on input","func":"\ncontext.state = context.state || 0;\n\n(context.state == 0) ? context.state = 1 : context.state = 0;\nmsg.payload = context.state;\n\nreturn msg;","outputs":1,"x":362,"y":76,"z":"2fd1a8b8.d02e58","wires":[["f7fad3c0.08053"]]},{"id":"47794a9.fb886b4","type":"debug","name":"","active":true,"x":341,"y":146.00002098083496,"z":"2fd1a8b8.d02e58","wires":[]},{"id":"bc3c8444.43c378","type":"inject","name":"tick every 3 secs","topic":"","payload":"","payloadType":"date","repeat":"3","crontab":"","once":false,"x":160,"y":76.00002098083496,"z":"2fd1a8b8.d02e58","wires":[["2462d9f5.db9d26"]]},{"id":"f7fad3c0.08053","type":"rpi-gpio out","name":"","pin":"12","set":false,"out":"out","x":533.8333740234375,"y":75.83333396911621,"z":"2fd1a8b8.d02e58","wires":[]},{"id":"8035245c.7fcad8","type":"rpi-gpio in","name":"","pin":"16","intype":"tri","read":true,"x":182,"y":145.8333339691162,"z":"2fd1a8b8.d02e58","wires":[["47794a9.fb886b4"]]}]'
