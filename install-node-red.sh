@@ -120,7 +120,7 @@ else
   }
 fi
 
-HOSTNAMEIP="$(which node-red)"
+HOSTNAMEIP="$(hosname -I)"
 echo -e "${GREEN}Yay! You have node-red up and running.${NC}"
 echo -e "${GREEN}Visit http://$HOSTNAMEIP:1880/ to begin noding in awe.${NC}"
 echo -e "${GREEN}You can use the following nodes to test your configuration.${NC}"
