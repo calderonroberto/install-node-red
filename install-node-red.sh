@@ -101,8 +101,9 @@ echo -e "${GREEN}Downloading, compiling and installing latest version of node-re
 ##
 
 NODEREDBIN="$(which node-red)"
-if [ -a /etc/init.d/node-red ]; then
-  echo -e "${GREEN}init.d script already configured${NC}"
+PM2BIN="$(which pm2)"
+if [ -a $PM2BIN ]; then
+  echo -e "${GREEN}Startup at boot already configured${NC}"
 else
   echo -e "${GREEN}Configuring to start nodered at boot via $NODEREDBIN ${NC}"
   {
