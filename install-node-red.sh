@@ -115,7 +115,7 @@ else
     $SUDO pm2 save
     $SUDO pm2 startup
   } || {
-    echo -e "${RED}ERROR: there was a problem downloading and configuring the init.d script${NC}"
+    echo -e "${RED}ERROR: there was a problem configuring start on boot${NC}"
     exit
   }
 fi
