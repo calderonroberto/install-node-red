@@ -24,7 +24,7 @@ bash install-node-red.sh
 After you're finished you can find your ip address with:
 
 ```
-sudo ifconfig
+hostname -I
 ```
 
 Then, visit http:://your-rpi-address:1880/, you can then go to "menu > import > clipboard" and import the following nodes. They are a blinking demo, demonstrating also how to read from a digital input.
@@ -37,7 +37,7 @@ To wire your Raspberry you can use a breakout and cable like the Pi Cobbler sold
 
 For demo purposes we wire a resistor (330 ohms) to pin pin 12, wire pin 12 to pin 16 (to read when it changes) and connect an LED to the resistor and the 3V output. Like so:
 
-![alt tag](https://raw.github.com/calderonroberto/install-node-red/master/blinkwiring.jpg)
+![alt tag](https://raw.github.com/SenseTecnic/install-node-red-raspberrypi2/master/blinkwiring.jpg)
 
 You can learn more about the Raspbery Pi's GPIO pins here: [http://pi.gadgetoid.com/pinout](http://pi.gadgetoid.com/pinout)
 
