@@ -111,6 +111,7 @@ else
     echo 'Starting service'
     $SUDO pm2 start $NODEREDBIN --node-args="--max-old-space-size=128" -- -v
     echo 'Configuring for startup'
+    $SUDO pm2 save
     $SUDO pm2 startup
   } || {
     echo -e "${RED}ERROR: there was a problem downloading and configuring the init.d script${NC}"
