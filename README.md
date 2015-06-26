@@ -34,13 +34,13 @@ In a console in your Raspberry Pi issue:
 
 ```
 cd ~
-curl -sL https://raw.githubusercontent.com/SenseTecnic/install-node-red-pi2/master/install-node-red.sh | sudo bash
+curl --no-sessionid -sL https://raw.githubusercontent.com/SenseTecnic/install-node-red-pi2/master/install-node-red.sh | sudo bash
 ```
 
 If you are in need of a shorter version you can use:
 
 ```
-curl -sL http://bit.ly/node-red-pi2 | sudo bash
+curl --no-sessionid -sL http://bit.ly/node-red-pi2 | sudo bash
 ```
 
 After you're finished you can find your ip address with:
