@@ -53,7 +53,7 @@ fi
 
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ##
-if dpkg --get-selections | grep python-rpi.gpio > /dev/null; then
+if dpkg --get-selections | grep python-rpi.gpio < /dev/null; then
   echo -e "${GREEN}GPIO dependencies already installed${NC}"
 else
   {
