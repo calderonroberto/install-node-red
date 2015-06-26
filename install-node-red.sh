@@ -36,7 +36,7 @@ cd ~
 
 ## Install nodejs
 ##
-if dpkg --get-selections | grep nodejs; then
+if dpkg --get-selections | grep nodejs > /dev/null; then
   echo -e "${GREEN}NodeJS is already installed${NC}"
 else
   echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
@@ -53,7 +53,7 @@ fi
 
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ##
-if dpkg --get-selections | grep python-rpi.gpio; then
+if dpkg --get-selections | grep python-rpi.gpio > /dev/null; then
   echo -e "${GREEN}GPIO dependencies already installed${NC}"
 else
   {
