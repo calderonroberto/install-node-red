@@ -8,8 +8,25 @@ This script provides routine commands to install and configure a default install
 + 2015-06-25 Update for Raspbery Pi 2 (Raspbian 3.18.11-v7+)
 
 
-##
+## Nodes Installed
 
+Currently this script will install the following nodes:
+
++ node-red-contrib-wotkit
++ node-red-node-web-nodes
++ node-red-node-web-nodes
++ node-red-node-pushbullet
++ node-red-node-wordpos
++ node-red-node-xmpp
++ node-red-node-badwords
++ node-red-node-suncalc
++ node-red-node-smooth
++ node-red-node-ping
++ node-red-contrib-moment
++ node-red-node-fitbit
++ node-red-contrib-slack
+
+If you want to add your own please send a pull request or post an issue.
 
 ## STEP-BY-STEP-INSTRUCTIONS
 
