@@ -89,7 +89,7 @@ echo -e "${GREEN}Downloading, compiling and installing complimentary nodes${NC}"
 {
   $SUDO npm install -g \
   node-red-contrib-wotkit \
-  node-red-contrib-web-nodes \
+  node-red-node-web-nodes \
   node-red-node-web-nodes \
   node-red-node-pushbullet \
   node-red-node-wordpos \
