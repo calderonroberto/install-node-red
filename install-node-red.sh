@@ -58,7 +58,7 @@ if dpkg --get-selections | grep python-rpi.gpio; then
 else
   {
     echo -e "${GREEN}Installing GPIO Dependencies.${NC}"
-    $SUDO apt-get install -y build-essential python-dev python-rpi.gpio
+    $SUDO apt-get install -y --force-yes build-essential python-dev python-rpi.gpio
   } || { #catch block
 
     echo -e "${RED}ERROR: There was a problem installing GPIO dependencies${NC}"
