@@ -21,7 +21,6 @@
 # + Node-RED runs with a garbage collection size of 128, can be optimized as 64
 # + This script was tested with a clean install of raspbian NOOBS
 
-INITFILE=https://raw.githubusercontent.com/calderonroberto/install-node-red/master/node-red
 SUDO=''
 
 NC='\033[0m' # No Color
@@ -33,26 +32,6 @@ if (( $EUID != 0 )); then
 fi
 
 cd ~
-
-
-
-## Install nodejs optimized for the raspberry pi architecture (ARM)
-##
-if [ ! dpkg-query -l nodejs < /dev/null ]; then
-  echo -e "${GREEN}NodeJS is already installed${NC}"
-else
-  echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
-  {
-    #Install node
-    $SUDO curl -sL https://deb.nodesource.com/setup_0.10 | $SUDO bash
-    $SUDO apt-get install -y nodejs
-    $SUDO npm cache clean
-  } || {
-    echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
-    exit
-  }
-fi
-
 
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ##
@@ -69,6 +48,23 @@ else
   echo -e "${GREEN}GPIO dependencies already installed${NC}"
 fi
 
+
+## Install nodejs optimized for the raspberry pi architecture (ARM)
+##
+if [ ! dpkg-query -l nodejs < /dev/null ]; then
+  echo -e "${GREEN}NodeJS is already installed${NC}"
+else
+  echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
+  {
+    #Install node
+    $SUDO curl -sL https://deb.nodesource.com/setup_0.10 | $SUDO bash
+    $SUDO apt-get install -y nodejs
+  } || {
+    echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
+    exit
+  }
+fi
+
 ## Download and install NodeRED via NPM
 ##
 #DIR='/usr/lib/node_modules/node-red'
@@ -80,17 +76,30 @@ else
   echo -e "${GREEN}Downloading, compiling and installing node-red${NC}"
   {
     $SUDO npm install -g --unsafe-perm node-red
+    $SUDO npm cache clean
   } || {
     echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
     exit
   }
 fi
 
-## Install WoTKit nodeRED
-echo -e "${GREEN}Downloading, compiling and installing latest version of node-red-contrib-wotkit${NC}"
+## Install Interesting Nodes.
+echo -e "${GREEN}Downloading, compiling and installing complimentary nodes${NC}"
 {
-  $SUDO npm uninstall -g node-red-contrib-wotkit
-  $SUDO npm install -g node-red-contrib-wotkit
+  $SUDO npm install -g \
+  node-red-contrib-wotkit \
+  node-red-contrib-web-nodes \
+  node-red-node-web-nodes \
+  node-red-node-pushbullet \
+  node-red-node-wordpos \
+  node-red-node-xmpp \
+  node-red-node-badwords \
+  node-red-node-suncalc \
+  node-red-node-smooth \
+  node-red-node-ping \
+  node-red-contrib-moment \
+  node-red-node-fitbit \
+  node-red-contrib-slack
 } || {
   echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
   exit
@@ -102,23 +111,20 @@ echo -e "${GREEN}Downloading, compiling and installing latest version of node-re
 
 NODEREDBIN="$(which node-red)"
 PM2BIN="$(which pm2)"
-if [ -a $PM2BIN ]; then
-  echo -e "${GREEN}Startup at boot already configured${NC}"
-else
-  echo -e "${GREEN}Configuring to start nodered at boot via $NODEREDBIN ${NC}"
-  {
-    echo 'Install pm2'
-    $SUDO npm install -g pm2
-    echo 'Starting service'
-    $SUDO pm2 start $NODEREDBIN --node-args="--max-old-space-size=128" -- -v
-    echo 'Configuring for startup'
-    $SUDO pm2 save
-    $SUDO pm2 startup
-  } || {
-    echo -e "${RED}ERROR: there was a problem configuring start on boot${NC}"
-    exit
-  }
-fi
+echo -e "${GREEN}Configuring to start nodered at boot via $NODEREDBIN ${NC}"
+{
+  echo 'Installing pm2'
+  $SUDO npm install -g pm2
+  echo 'Deleting previous configurations and starting service'
+  $SUDO pm2 delete node-red
+  $SUDO pm2 start $NODEREDBIN --node-args="--max-old-space-size=128" -- -v
+  echo 'Configuring for startup'
+  $SUDO pm2 save
+  $SUDO pm2 startup
+} || {
+  echo -e "${RED}ERROR: there was a problem configuring start on boot${NC}"
+  exit
+}
 
 HOSTNAMEIP="$(hosname -I)"
 echo -e "${GREEN}Yay! You have node-red up and running.${NC}"
