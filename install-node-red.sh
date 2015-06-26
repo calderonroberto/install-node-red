@@ -36,7 +36,7 @@ cd ~
 
 ## Install nodejs
 ##
-if dpkg --get-selections | nodejs > /dev/null; then
+if dpkg --get-selections | nodejs < /dev/null; then
   echo -e "${GREEN}NodeJS is already installed${NC}"
 else
   echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
