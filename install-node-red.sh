@@ -77,7 +77,6 @@ else
   echo -e "${GREEN}Downloading, compiling and installing node-red${NC}"
   {
     $SUDO npm install -g --unsafe-perm node-red
-    $SUDO npm cache clean
   } || {
     echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
     exit
@@ -100,6 +99,7 @@ echo -e "${GREEN}Downloading, compiling and installing complimentary nodes${NC}"
   node-red-contrib-moment \
   node-red-node-fitbit \
   node-red-contrib-slack
+  $SUDO npm cache clean
 } || {
   echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
   exit
