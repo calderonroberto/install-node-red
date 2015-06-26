@@ -87,7 +87,7 @@ fi
 ## Install Interesting Nodes.
 echo -e "${GREEN}Downloading, compiling and installing complimentary nodes${NC}"
 {
-  $SUDO npm install -g \
+  $SUDO npm install -g --unsafe-perm \
   node-red-contrib-wotkit \
   node-red-node-web-nodes \
   node-red-node-pushbullet \
@@ -114,7 +114,7 @@ PM2BIN="$(which pm2)"
 echo -e "${GREEN}Configuring to start nodered at boot via $NODEREDBIN ${NC}"
 {
   echo 'Installing pm2'
-  $SUDO npm install -g pm2
+  $SUDO npm install -g --unsafe-perm pm2
   echo 'Deleting previous configurations and starting service'
   $SUDO pm2 delete node-red
   $SUDO pm2 start $NODEREDBIN --node-args="--max-old-space-size=128" -- -v
