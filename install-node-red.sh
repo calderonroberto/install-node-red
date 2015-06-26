@@ -33,34 +33,35 @@ fi
 
 cd ~
 
+
+## Install nodejs
+##
+if dpkg --get-selections | nodejs > /dev/null; then
+  echo -e "${GREEN}NodeJS is already installed${NC}"
+else
+  echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
+  {
+    #Prepare install
+    $SUDO curl -sL https://deb.nodesource.com/setup_0.10 | $SUDO bash
+    #Install
+    $SUDO apt-get install -y nodejs
+  } || {
+    echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
+    exit
+  }
+fi
+
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ##
-if [[ ! dpkg-query -l python-rpi.gpio < /dev/null ]]; then
+if dpkg --get-selections | grep python-rpi.gpio > /dev/null; then
+  echo -e "${GREEN}GPIO dependencies already installed${NC}"
+else
   {
     echo -e "${GREEN}Installing GPIO Dependencies.${NC}"
     $SUDO apt-get install -y build-essential python-dev python-rpi.gpio
   } || { #catch block
 
     echo -e "${RED}ERROR: There was a problem installing GPIO dependencies${NC}"
-    exit
-  }
-else
-  echo -e "${GREEN}GPIO dependencies already installed${NC}"
-fi
-
-
-## Install nodejs optimized for the raspberry pi architecture (ARM)
-##
-if [[ ! dpkg-query -l nodejs < /dev/null ]]; then
-  echo -e "${GREEN}NodeJS is already installed${NC}"
-else
-  echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
-  {
-    #Install node
-    $SUDO curl -sL https://deb.nodesource.com/setup_0.10 | $SUDO bash
-    $SUDO apt-get install -y nodejs
-  } || {
-    echo -e "${RED}ERROR: There was a problem installing nodejs${NC}"
     exit
   }
 fi
