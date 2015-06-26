@@ -35,7 +35,7 @@ cd ~
 
 ## You need to install GPIO dependencies (python-dev and python-rpi.gipo)
 ##
-if [ ! [ dpkg-query -l python-rpi.gpio < /dev/null ]]; then
+if [[ ! dpkg-query -l python-rpi.gpio < /dev/null ]]; then
   {
     echo -e "${GREEN}Installing GPIO Dependencies.${NC}"
     $SUDO apt-get install -y build-essential python-dev python-rpi.gpio
@@ -51,7 +51,7 @@ fi
 
 ## Install nodejs optimized for the raspberry pi architecture (ARM)
 ##
-if [ ! [ dpkg-query -l nodejs < /dev/null ] ]; then
+if [[ ! dpkg-query -l nodejs < /dev/null ]]; then
   echo -e "${GREEN}NodeJS is already installed${NC}"
 else
   echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
