@@ -42,7 +42,7 @@ else
   echo -e "${GREEN}Installing nodejs for raspberry pi${NC}"
   {
     #Prepare install
-    $SUDO curl -sL https://deb.nodesource.com/setup_0.10 | $SUDO bash
+    $SUDO curl -sL https://deb.nodesource.com/setup_0.12 | $SUDO bash
     #Install
     $SUDO apt-get install -y nodejs
   } || {
@@ -76,6 +76,7 @@ if [ -a "$NODEREDBIN" ]; then
 else
   echo -e "${GREEN}Downloading, compiling and installing node-red${NC}"
   {
+    $SUDO npm cache clean
     $SUDO npm install -g --unsafe-perm node-red
   } || {
     echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
@@ -98,7 +99,9 @@ echo -e "${GREEN}Downloading, compiling and installing complimentary nodes${NC}"
   node-red-node-ping \
   node-red-contrib-moment \
   node-red-node-fitbit \
-  node-red-contrib-slack
+  node-red-contrib-slack \
+  node-red-node-dweetio \
+  node-red-node-rbe
   $SUDO npm cache clean
 } || {
   echo -e "${RED}ERROR: there was a problem installing node-red${NC}"
