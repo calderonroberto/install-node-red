@@ -48,7 +48,6 @@ Currently this script will install the following nodes:
 
 + node-red-contrib-wotkit
 + node-red-node-web-nodes
-+ node-red-node-web-nodes
 + node-red-node-pushbullet
 + node-red-node-wordpos
 + node-red-node-xmpp
